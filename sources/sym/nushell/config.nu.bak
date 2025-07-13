@@ -1,0 +1,74 @@
+# config.nu
+#
+# Installed by:
+# version = 0.102.0
+#
+# This file is used to override default Nushell settings, define
+# (or import) custom commands, or run any other startup tasks.
+# See https://www.nushell.sh/book/configuration.html
+#
+# This file is loaded after env.nu and before login.nu
+#
+# You can open this file in your default editor using:
+# config nu
+#
+# See `help config nu` for more options
+#
+# You can remove these comments if you want or leave
+# them for future reference.
+
+use ~/.cache/starship/init.nu
+
+alias pamcan = pacman
+alias hz144 = wlr-randr --output eDP-1 --custom-mode 1920x1080@144
+alias hz60 = wlr-randr --output eDP-1 --custom-mode 1920x1080@60
+alias cat = bat --theme gruvbox-dark
+alias ls = eza -1lxh  -F --classify = always --color = always --icons = always --no-quotes --hyperlink --group-directories-first --no-user --git -@
+alias la = eza -1oxlhA -F --classify = always --color = always --icons = always --no-quotes --hyperlink --group-directories-first --no-user
+alias l = ls
+alias vim = nvim
+alias vi = nvim
+alias nv = nvim
+alias code = zed
+alias s = shutdown -P
+alias b = btop
+alias dgpu = supergfxctl -m Hybrid ; gnome-session-quit --logout
+alias igpu = supergfxctl -m Integrated ; gnome-session-quit --logout
+alias ff = fastfetch
+alias nf = neofetch --disable gpu wm shell packages terminal wm_theme --cpu_speed off --cpu_cores off --distro_shorthand on --gtk2 off --gtk3 off --bold on --color_blocks off --colors 4 4 4 4 --ascii_distro arch_small --ascii_colors 4 7
+alias cls = clear ; exec fish
+alias y = yazi
+alias lg = lazygit
+alias ld = lazydocker
+alias exiftool = perl ~/Documents/Image-ExifTool-13.19/exiftool
+alias cpu = cpufreqctl turbo get
+alias cpuoff = sudo cpufreqctl turbo set off ; cpufreqctl turbo get
+
+alias home = cd ~
+alias .. = cd ..
+alias ... = cd ../..
+alias .... = cd ../../..
+alias docs = cd ~/Documents
+alias pics = cd ~/Pictures
+alias music = cd ~/Music
+alias vids = cd ~/Videos
+alias downloads = cd ~/Downloads
+alias files = cd ~/Documents/files
+alias xx = exit
+
+alias .rust = cd ~/Documents/rust
+alias .go = cd ~/Documents/go
+alias .ts = cd ~/Documents/ts
+alias .gleam = cd ~/Documents/gleam
+alias .odin = cd ~/Documents/odin
+alias .kotlin = cd ~/Documents/kotlin
+alias .v = cd ~/Documents/v
+
+alias ..rust = cargo watch -x run
+alias ..rs = ..rust
+alias ..go = go run .
+alias ..odin = odin run .
+alias ..od = ..odin
+alias mk = make
+alias super = chmod +wx
+alias emulator = QT_QPA_PLATFORM = xcb ~/Android/Sdk/emulator/emulator
