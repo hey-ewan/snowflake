@@ -150,7 +150,9 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     Mod+T hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
-    Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
+    Mod+D hotkey-overlay-title="Launcher: fuzzel" { spawn "fuzzel"; }
+    Mod+Space hotkey-overlay-title="Launcher: ignis" { spawn "ignis" "toggle-window" "ignis_LAUNCHER"; }
+    Mod+N hotkey-overlay-title="Control Centre: ignis" { spawn "ignis" "toggle-window" "ignis_CONTROL_CENTER"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: hyprlock" { spawn "hyprlock"; }
     Mod+W hotkey-overlay-title="Open a Web Browser: zen" { spawn "zen"; }
     Mod+Z hotkey-overlay-title="Open a Code Editor: zed" { spawn "zeditor"; }

@@ -13,14 +13,58 @@
     };
   };
 
+  services.swayidle =
+  let
+    lock = "${pkgs.hyprlock}/bin/hyprlock --no-fade-in";
+    display = status: "${pkgs.niri}/bin/niri msg action power-${status}-monitors";
+  in
+  {
+    enable = true;
+    timeouts = [
+      {
+        timeout = 1785;
+        command = "${pkgs.libnotify}/bin/notify-send 'Locking in 5 seconds' -t 5000";
+      }
+      {
+        timeout = 1800;
+        command = lock;
+      }
+      {
+        timeout = 300;
+        command = display "off";
+        resumeCommand = display "on";
+      }
+      {
+        timeout = 2700;
+        command = "${pkgs.systemd}/bin/systemctl suspend";
+      }
+    ];
+    events = [
+      {
+        event = "before-sleep";
+        command = (display "off") + "; " + lock;
+      }
+      {
+        event = "after-resume";
+        command = display "on";
+      }
+      {
+        event = "lock";
+        command = (display "off") + "; " + lock;
+      }
+      {
+        event = "unlock";
+        command = display "on";
+      }
+    ];
+  };
+
   programs.home-manager.enable = true;
 
   home.file = {
     ".config/niri/config.kdl".source = ./sources/config.kdl;
     ".config/yazi/yazi.toml".source = ./sources/yazi.toml;
     ".config/starship.toml".source = ./sources/starship.toml;
-    ".config/zed".source = ./sources/zed;
-    ".config/zed".recursive = true;
     ".config/ghostty".source = ./sources/ghostty;
     ".config/ghostty".recursive = true;
     ".config/fastfetch".source = ./sources/fastfetch;
@@ -48,5 +92,9 @@
     QT_QPA_PLATFORM = "wayland";
     QT_QPA_PLATFORMTHEME = "qt6ct";
     QT_STYLE_OVERRIDE = "kvantum";
+    OPENSSL_DIR = "${pkgs.openssl.dev}";
+    OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
+    OPENSSL_INCLUDE_DIR = "${pkgs.openssl.dev}/include";
+    PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
   };
 }

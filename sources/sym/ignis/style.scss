@@ -1,29 +1,62 @@
+$bg: #282828;
+$bg-light: #242424;
+$fg: #fbf1c7;
+$active: #d3869b;
+$innactive: #fb4934;
+
+$surface: #3c3836;
+$onSurface: #d5c4a1;
+$onSurfaceVariant: #ebdbb2;
+$surfaceContainerLow: #504945;
+$shadow: #1d2021;
+$surfaceContainerHigh: #665c54;
+$surfaceContainerHighest: #504945;
+$onTertiary: #8ec07c;
+$tertiary: #8ec07c;
+$error: #fb4934;
+
+$surfaceContainer: #504945;
+$primary: #83a598;
+
+@import "./scss/mixins/window.scss";
+@import "./scss/mixins/hover.scss";
+
+@import "./scss/launcher.scss";
+@import "./scss/notification_popup.scss";
+@import "./scss/control_center.scss";
+@import "./scss/notification_center.scss";
+
 * {
     all: unset;
     font-weight: bold;
 }
 
-$bg: #1a1112;
-$bg-light: #261d1e;
-$fg: #f0dedf;
-$active: #ffb2bc;
-$unactive: #d7c1c3;
+.menu {
+    min-width: 24px;
+    min-height: 24px;
+    border-radius: 1rem;
+    padding: 0.1rem;
+}
 
 .bar {
-    padding: 0.4rem 1rem;
-    background-color: $bg;
+    padding: 0.1rem 0.4rem;
+    min-width: 24px;
+    /* background-color: $bg; */
     color: $fg;
 }
 
 .middle-separator {
     background-color: gray;
-    padding: 0 0.03rem;
+    padding: 0.01rem 0rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .volume-slider trough {
     min-width: 100px;
     background-color: gray;
     min-height: 0.3rem;
+    transform: rotate(-90deg);
     border-radius: 1rem;
 
     highlight {
@@ -40,39 +73,85 @@ $unactive: #d7c1c3;
 }
 
 .workspaces {
+    border: $active 0.25px solid;
     border-radius: 1rem;
     padding: 0.5rem;
-    background-color: lighten($bg, 25%);
-    margin: 0 0.5rem;
-    margin-left: 0;
+    background-color: $bg;
+    margin: 0.5rem;
+}
+
+@keyframes workspace-activate {
+    from {
+        min-height: 0.7rem;
+        background-color: lighten($innactive, 15%);
+    }
+    to {
+        min-height: 2rem;
+        background-color: darken($active, 10%);
+    }
+}
+
+@keyframes workspace-deactivate {
+    from {
+        background-color: darken($active, 10%);
+    }
+    to {
+        min-height: 0.7rem;
+        background-color: lighten($innactive, 15%);
+    }
 }
 
 .workspace {
     border-radius: 1rem;
-    margin: 0 0.25rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
     min-width: 0.7rem;
     min-height: 0.7rem;
-    transition: 0.3s;
-    background-color: lighten($bg, 40%);
+    background-color: lighten($innactive, 15%);
 
     &:hover {
-        background-color: darken($active, 2%);
+        background-color: $innactive;
     }
 
     &.active {
-        background-color: $active;
+        background-color: darken($active, 10%);
         color: $bg;
-        min-width: 2rem;
+        min-height: 2rem;
+        animation: workspace-activate 0.05s ease-in;
     }
+
+    &:not(.active) {
+        animation: workspace-deactivate 0.05s ease-in;
+    }
+}
+
+.top {
+    border: $active 0.25px solid;
+    border-radius: 1.25rem;
+    padding: 0.5rem;
+    background-color: $bg;
+    margin-top: 1rem;
+}
+
+.bottom {
+    border: $active 0.25px solid;
+    border-radius: 1.25rem;
+    padding: 1rem 0rem;
+    background-color: $bg;
+    margin-bottom: 1rem;
 }
 
 .tray-item {
     all: unset;
 }
 
+.power {
+}
+
 .clock {
-    font-size: 1.1rem;
-    margin-right: 0.5rem;
+    font-family: Electroharmonix;
+    font-size: 1rem;
+    margin: 0.125rem 0rem;
 }
 
 popover.menu {
@@ -86,16 +165,16 @@ popover.menu {
             padding: 0.25rem 1rem;
         }
         modelbutton:hover {
-            background-color: mix($bg, $unactive, 80%);
+            background-color: mix($bg, $innactive, 80%);
         }
         separator {
-            background-color: mix($bg, $unactive, 90%);
+            background-color: mix($bg, $innactive, 90%);
             min-height: 0.1rem;
             margin: 0.5rem 0;
         }
 
         label:disabled {
-            color: $unactive;
+            color: $innactive;
         }
 
         arrow {
@@ -113,5 +192,14 @@ popover.menu {
                 -gtk-icon-source: -gtk-icontheme("go-next-symbolic");
             }
         }
+    }
+}
+
+.battery-percentage {
+    margin: 0.5rem 0;
+    transform: rotate(-90deg);
+
+    icon {
+        margin-bottom: 0.25rem;
     }
 }

@@ -1,1 +1,159 @@
-/nix/store/8aclh3i5m3hbcjpx8yhys4x26hzdnb75-home-manager-files/.config/zed/settings.json
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "edit_predictions": {
+    "disabled_globs": [".env"],
+    "mode": "eager",
+    "copilot": {
+      "proxy": null,
+      "proxy_no_verify": null
+    },
+    "enabled_in_text_threads": false
+  },
+  "auto_update_extensions": {
+    "charmed-icons": false
+  },
+  "icon_theme": "Soft Charmed Icons",
+  "agent": {
+    "always_allow_tool_actions": true,
+    "version": "2",
+    "default_profile": "write",
+    "default_model": {
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4"
+    },
+    "dock": "right"
+  },
+  // "minimap": { "show": "auto" },
+  "max_tabs": 6,
+  "features": {
+    "edit_prediction_provider": "zed"
+  },
+  "cursor_shape": "underline",
+  "cursor_blink": true,
+  "vim": {
+    "toggle_relative_line_numbers": true,
+    "highlight_on_yank_duration": 750,
+    "use_system_clipboard": "always",
+    "use_multiline_find": true
+  },
+  "git_panel": {
+    "dock": "bottom"
+  },
+  "diagnostics": {
+    "include_warnings": true,
+    "inline": {
+      "enabled": true,
+      "update_debounce_ms": 150,
+      "padding": 4,
+      "min_column": 0,
+      "max_severity": null
+    }
+  },
+  "ui_font_size": 16,
+  "buffer_font_family": "Zed Plex Mono",
+  "buffer_font_size": 14.0,
+  "slash_commands": {
+    "cargo_workspace": {
+      "enabled": false
+    }
+  },
+  "theme": {
+    "mode": "system",
+    "light": "Gruvbox ish Dark Medium",
+    "dark": "Gruvbox ish Dark Medium"
+  },
+  "vim_mode": true,
+  "ui_font_features": {},
+  "terminal": {
+    "shell": {
+      "program": "fish"
+    },
+    "font_size": 14,
+    "font_family": "SpaceMono Nerd Font Propo",
+    "cursor_shape": "underline",
+    "blinking": "on",
+    "alternate_scroll": "on",
+    "dock": "bottom"
+  },
+  "project_panel": {
+    "dock": "right",
+    "entry_spacing": "standard",
+    "indent_size": 16
+    // "scrollbar": {
+    // "show": "never"
+    // }
+  },
+  "toolbar": {
+    "selections_menu": false,
+    "breadcrumbs": false,
+    "quick_actions": false
+  },
+  "telemetry": {
+    "metrics": false,
+    "diagnostics": true
+  },
+  "formatter": "auto",
+  "languages": {
+    "env": {
+      "show_edit_predictions": false
+    },
+    "Markdown": {
+      "tab_size": 2,
+      "formatter": "prettier"
+    },
+    "TOML": {
+      "formatter": "prettier",
+      "format_on_save": "off"
+    },
+    "YAML": {
+      "tab_size": 2,
+      "formatter": "prettier"
+    },
+    "JSON": {
+      "tab_size": 2,
+      "preferred_line_length": 100,
+      "formatter": "prettier"
+    },
+    "JSONC": {
+      "tab_size": 2,
+      "preferred_line_length": 100,
+      "formatter": "prettier"
+    },
+    "JavaScript": {
+      "tab_size": 2,
+      "formatter": "prettier"
+    },
+    "CSS": {
+      "tab_size": 2,
+      "formatter": "prettier"
+    },
+    "Rust": {
+      "tab_size": 2,
+      "formatter": "auto"
+    },
+    "Markdown-Inline": {
+      "tab_size": 2,
+      "formatter": "prettier"
+    }
+  },
+  "lsp": {
+    "wakatime": {
+      "settings": {
+        "api-key": ""
+      }
+    },
+    "rust-analyzer": {
+      "binary": {
+        "path": "/run/current-system/sw/bin/rust-analyzer",
+        "path_lookup": true
+      }
+    }
+  }
+}

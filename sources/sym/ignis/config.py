@@ -11,6 +11,10 @@ from ignis.services.hyprland import HyprlandService, HyprlandWorkspace
 from ignis.services.niri import NiriService, NiriWorkspace
 from ignis.services.notifications import NotificationService
 from ignis.services.mpris import MprisService, MprisPlayer
+from ignis.services.upower import UPowerService
+
+from modules import Launcher, NotificationPopup , ControlCenter
+from user_options import user_options
 
 css_manager = CssManager.get_default()
 
@@ -29,6 +33,7 @@ hyprland = HyprlandService.get_default()
 niri = NiriService.get_default()
 notifications = NotificationService.get_default()
 mpris = MprisService.get_default()
+upower = UPowerService.get_default()
 
 
 def hyprland_workspace_button(workspace: HyprlandWorkspace) -> widgets.Button:
@@ -115,10 +120,11 @@ def hyprland_workspaces() -> widgets.EventBox:
 
 def niri_workspaces(monitor_name: str) -> widgets.EventBox:
     return widgets.EventBox(
+        vertical=True,
         on_scroll_up=lambda x: scroll_workspaces("up", monitor_name),
         on_scroll_down=lambda x: scroll_workspaces("down", monitor_name),
         css_classes=["workspaces"],
-        spacing=5,
+        spacing=4,
         child=niri.bind(
             "workspaces",
             transform=lambda value: [
@@ -140,6 +146,7 @@ def workspaces(monitor_name: str) -> widgets.EventBox:
 def mpris_title(player: MprisPlayer) -> widgets.Box:
     return widgets.Box(
         spacing=10,
+        css_classes=["mpris-title"],
         setup=lambda self: player.connect(
             "closed",
             lambda x: self.unparent(),  # remove widget when player is closed
@@ -158,6 +165,7 @@ def mpris_title(player: MprisPlayer) -> widgets.Box:
 def media() -> widgets.Box:
     return widgets.Box(
         spacing=10,
+        css_classes=["media"],
         child=[
             widgets.Label(
                 label="No media players",
@@ -208,25 +216,49 @@ def current_notification() -> widgets.Label:
     )
 
 
-def clock() -> widgets.Label:
+def clock_h() -> widgets.Label:
     # poll for current time every second
     return widgets.Label(
         css_classes=["clock"],
         label=utils.Poll(
-            1_000, lambda self: datetime.datetime.now().strftime("%H:%M")
+            1_000, lambda self: datetime.datetime.now().strftime("%H")
+        ).bind("output"),
+    )
+
+def clock_m() -> widgets.Label:
+    # poll for current time every second
+    return widgets.Label(
+        css_classes=["clock"],
+        label=utils.Poll(
+            1_000, lambda self: datetime.datetime.now().strftime("%M")
         ).bind("output"),
     )
 
 
 def speaker_volume() -> widgets.Box:
     return widgets.Box(
+        css_classes=["speaker-volume"],
         child=[
             widgets.Icon(
-                image=audio.speaker.bind("icon_name"), style="margin-right: 5px;"
+                image=audio.speaker.bind("icon_name")
             ),
             widgets.Label(
                 label=audio.speaker.bind(
                     "volume", transform=lambda value: str(value))
+            ),
+        ]
+    )
+
+def battery_percentage() -> widgets.Box:
+    return widgets.Box(
+        css_classes=["battery-percentage"],
+        child=[
+            widgets.Icon(
+                image=upower.display_device.bind("icon_name")
+            ),
+            widgets.Label(
+                label=upower.display_device.bind(
+                    "percent", transform=lambda value: str(value) + "%")
             ),
         ]
     )
@@ -265,8 +297,9 @@ def tray_item(item: SystemTrayItem) -> widgets.Button:
 
     return widgets.Button(
         child=widgets.Box(
+            vertical=True,
             child=[
-                widgets.Icon(image=item.bind("icon"), pixel_size=24),
+                widgets.Icon(image=item.bind("icon"), pixel_size=18),
                 menu,
             ]
         ),
@@ -280,10 +313,18 @@ def tray_item(item: SystemTrayItem) -> widgets.Button:
 
 def tray():
     return widgets.Box(
+        vertical=True,
         setup=lambda self: system_tray.connect(
             "added", lambda x, item: self.append(tray_item(item))
         ),
-        spacing=10,
+        spacing=8,
+    )
+
+def menu() -> widgets.Button:
+    return widgets.Button(
+        css_classes=["menu"],
+        on_click=lambda x: create_exec_task("ignis toggle-window ignis_LAUNCHER"),
+        child=widgets.Icon(image="/home/ewan/.config/ignis/nixos.svg", pixel_size=24),
     )
 
 
@@ -347,38 +388,66 @@ def power_menu() -> widgets.Button:
     )
     return widgets.Button(
         child=widgets.Box(
+            vertical=True,
             child=[widgets.Icon(
-                image="system-shutdown-symbolic", pixel_size=20), menu]
+                image="system-shutdown-symbolic", pixel_size=24), menu]
         ),
+        css_classes=["power"],
         on_click=lambda x: menu.popup(),
     )
 
-
-def left(monitor_name: str) -> widgets.Box:
+def top() -> widgets.Box:
     return widgets.Box(
-        child=[workspaces(monitor_name), client_title(monitor_name)], spacing=10
-    )
-
-
-def center() -> widgets.Box:
-    return widgets.Box(
+        vertical=True,
         child=[
-            current_notification(),
+            menu(),
             widgets.Separator(vertical=True, css_classes=["middle-separator"]),
-            media(),
+            tray()
         ],
-        spacing=10,
+        css_classes=["top"]
     )
+
+def center(monitor_name: str) -> widgets.Box:
+    return widgets.Box(
+        vertical=True,
+        child=[workspaces(monitor_name)],
+    )
+
+def bottom() -> widgets.Box:
+    return widgets.Box(
+        vertical=True,
+        child=[
+            clock_h(),
+            clock_m(),
+            widgets.Separator(vertical=True, css_classes=["middle-separator"]),
+            power_menu()
+        ],
+        css_classes=["bottom"]
+    )
+
+# def center() -> widgets.Box:
+#     return widgets.Box(
+#         vertical=True,
+#         css_classes=["center-section"],
+#         child=[
+#             current_notification(),
+#             widgets.Separator(vertical=False, css_classes=["middle-separator"]),
+#             media(),
+#         ],
+#         spacing=10,
+#     )
 
 
 def right() -> widgets.Box:
     return widgets.Box(
+        vertical=True,
+        css_classes=["right-section"],
         child=[
             tray(),
             keyboard_layout(),
             speaker_volume(),
             speaker_slider(),
-            clock(),
+            battery_percentage(),
             power_menu(),
         ],
         spacing=10,
@@ -391,17 +460,23 @@ def bar(monitor_id: int = 0) -> widgets.Window:
     return widgets.Window(
         namespace=f"ignis_bar_{monitor_id}",
         monitor=monitor_id,
-        anchor=["left", "top", "right"],
+        anchor=["top", "left", "bottom"],
         exclusivity="exclusive",
         child=widgets.CenterBox(
+            vertical=True,
             css_classes=["bar"],
-            start_widget=left(monitor_name),  # type: ignore
-            center_widget=center(),
-            end_widget=right(),
+            start_widget=top(),
+            center_widget=center(monitor_name),  # type: ignore
+            end_widget=bottom(),
         ),
     )
+
 
 
 # this will display bar on all monitors
 for i in range(utils.get_n_monitors()):
     bar(i)
+    NotificationPopup(i)
+
+Launcher()
+ControlCenter()

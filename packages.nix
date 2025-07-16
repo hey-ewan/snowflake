@@ -8,8 +8,10 @@ with pkgs; with inputs; [
   bat
   neovim
   cloudflare-warp
+  wayland-pipewire-idle-inhibit
   gummi
   rustup
+  go
   fishMinimal
   localsend
   telegram-desktop
@@ -36,10 +38,23 @@ with pkgs; with inputs; [
   evolve-core
   gradience
   nodejs_24
+  pnpm
   texliveTeTeX
   nasm
   zig
-  libgcc
+  gcc15
+  libclang
+  gnumake
+  cmake
+  rust-bindgen
+  openssl
+  protobuf
+  pkgconf
+  docker-compose
+  figma-linux
+  # figma-agent
+  vlc
+  rustls-libssl
   zls
   yazi
   stow
@@ -70,8 +85,9 @@ with pkgs; with inputs; [
   kdePackages.kirigami-addons # Not sure if this is needed
   fuzzel
   fprintd-tod
-  pkgs.ignis
   python313Full
+  python313Packages.pip
+  libnotify
   dart-sass
   material-symbols
   (pkgs.ignis.override {
@@ -82,6 +98,8 @@ with pkgs; with inputs; [
       python313Packages.materialyoucolor
     ];
   })
+  pkgs.ignis
+  wayland-pipewire-idle-inhibit
   # sgx-ssl
   # sgx-sdk
   # sgx-psw

@@ -19,6 +19,15 @@
 
   networking.networkmanager.enable = true;
 
+  networking.firewall = {
+    allowedTCPPorts = [
+      53317
+    ];
+    allowedUDPPorts = [
+      53317
+    ];
+  };
+
   time.timeZone = "Africa/Lagos";
 
   i18n.defaultLocale = "en_GB.UTF-8";
@@ -33,6 +42,10 @@
     LC_PAPER = "en_NG";
     LC_TELEPHONE = "en_NG";
     LC_TIME = "en_NG";
+  };
+
+  virtualisation.docker = {
+    enable = true;
   };
 
   services.xserver.enable = true;
@@ -69,7 +82,7 @@
     isNormalUser = true;
     description = "ewan";
     shell = pkgs.fish;
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     packages = with pkgs; [
     ];
   };
@@ -85,8 +98,8 @@
   services.fprintd.tod.enable = true;
   services.fprintd.tod.driver = pkgs.libfprint-2-tod1-goodix;
 
-  systemd.packages = [ pkgs.cloudflare-warp ];
-  systemd.targets.multi-user.wants = [ "warp-svc.service" ];
+  systemd.packages = [ pkgs.cloudflare-warp pkgs.wayland-pipewire-idle-inhibit ];
+  systemd.targets.multi-user.wants = [ "warp-svc.service" "wayland-pipewire-idle-inhibit.service" ];
   services.cloudflare-warp.enable = true;
   systemd.user.services.warp-taskbar.wantedBy = [ "graphical.target" ];
 
