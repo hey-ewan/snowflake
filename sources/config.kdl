@@ -131,7 +131,7 @@ animations {
 
 
 window-rule {
-    match app-id=r#"zen$"# title="^Picture-in-Picture$"
+    match app-id="zen-beta" title="^Picture-in-Picture$"
     open-floating true
     default-floating-position x=16 y=16 relative-to="bottom-right"
     min-width 320
@@ -140,6 +140,11 @@ window-rule {
     max-height 360
 }
 
+window-rule {
+    match app-id="zen-beta"
+    exclude is-floating=true
+    open-maximized true
+}
 
 window-rule {
     geometry-corner-radius 20

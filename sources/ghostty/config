@@ -9,6 +9,7 @@ cursor-click-to-move = true
 cursor-invert-fg-bg = true
 adjust-underline-thickness = 1
 background = #282828
+theme = GruvboxDark
 
 # mouse
 mouse-hide-while-typing = true

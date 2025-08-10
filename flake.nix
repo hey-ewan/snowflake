@@ -1,6 +1,7 @@
  {
   description = "Nixos config flake";
   inputs = {
+    figma-patched.url = "github:ilsubyeega/nixpkgs/figma-agent";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
@@ -56,7 +57,12 @@
             };
           }
           ({ config, pkgs, ... }: {
-            nixpkgs.overlays = [ ignis.overlays.default ];
+            nixpkgs.overlays = [
+              ignis.overlays.default
+              (final: prev: {
+                figma-agent = inputs.figma-patched.legacyPackages.${pkgs.system}.figma-agent;
+              })
+            ];
           })
         ];
       };
@@ -96,6 +102,9 @@
                 pkgs.cargo
                 pkgs.openssl
                 pkgs.pkg-config
+                pkgs.llvmPackages.clang
+                pkgs.llvmPackages.libclang
+                pkgs.llvmPackages.llvm
               ];
 
               shellHook = ''
@@ -103,6 +112,10 @@
                 export OPENSSL_LIB_DIR=${pkgs.openssl.out}/lib
                 export OPENSSL_INCLUDE_DIR=${pkgs.openssl.dev}/include
                 export PKG_CONFIG_PATH=${pkgs.openssl.dev}/lib/pkgconfig
+
+                export LIBCLANG_PATH=${pkgs.llvmPackages.libclang.lib}/lib
+                export CLANG_PATH=${pkgs.llvmPackages.clang}/bin/clang
+                export BINDGEN_EXTRA_CLANG_ARGS="--target=x86_64 -isystem ${pkgs.glibc.dev}/include";
               '';
             };
       };

@@ -12,6 +12,7 @@ with pkgs; with inputs; [
   gummi
   rustup
   go
+  azure-cli
   fishMinimal
   localsend
   telegram-desktop
@@ -25,6 +26,8 @@ with pkgs; with inputs; [
   swww
   libreoffice
   lutris
+  wineWowPackages.waylandFull
+  winetricks
   gitMinimal
   lazygit
   lazydocker
@@ -43,7 +46,14 @@ with pkgs; with inputs; [
   nasm
   zig
   gcc15
-  libclang
+  glibc
+  glibc.dev
+  glibc.static
+  llvmPackages.clang
+  llvmPackages.libclang
+  llvmPackages.llvm
+  # aws-lc
+  pkg-config
   gnumake
   cmake
   rust-bindgen
@@ -52,7 +62,7 @@ with pkgs; with inputs; [
   pkgconf
   docker-compose
   figma-linux
-  # figma-agent
+  figma-agent
   vlc
   rustls-libssl
   zls
@@ -60,7 +70,7 @@ with pkgs; with inputs; [
   stow
   jujutsu
   fishPlugins.wakatime-fish
-  fishPlugins.sponge
+  # fishPlugins.sponge
   fishPlugins.gruvbox
   quickshell.packages.${system}.default
   zen-browser.packages."${system}".default
@@ -100,9 +110,13 @@ with pkgs; with inputs; [
   })
   pkgs.ignis
   wayland-pipewire-idle-inhibit
-  # sgx-ssl
-  # sgx-sdk
-  # sgx-psw
-  # sgxs-tools
-  # fortanix-sgx-tools
+  aseprite
+  alsa-lib.dev
+  gdb
+  brave
+  tradingview
+  freecad
+  tcpdump
+  qemu
+  nushell
 ]

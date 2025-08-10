@@ -96,5 +96,12 @@
     OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
     OPENSSL_INCLUDE_DIR = "${pkgs.openssl.dev}/include";
     PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
+    LIBCLANG_PATH = "${pkgs.llvmPackages.libclang.lib}/lib";
+    CLANG_PATH = "${pkgs.llvmPackages.clang}/bin/clang";
+    BINDGEN_EXTRA_CLANG_ARGS = "--target=x86_64 -isystem ${pkgs.glibc.dev}/include";
   };
+
+  home.sessionPath = [
+    "$HOME/.cargo/bin"
+  ];
 }

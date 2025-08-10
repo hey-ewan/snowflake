@@ -21,6 +21,10 @@
   },
   "icon_theme": "Soft Charmed Icons",
   "agent": {
+    "inline_assistant_model": {
+      "provider": "zed.dev",
+      "model": "claude-sonnet-4"
+    },
     "always_allow_tool_actions": true,
     "version": "2",
     "default_profile": "write",
@@ -144,15 +148,15 @@
     }
   },
   "lsp": {
-    "wakatime": {
-      "settings": {
-        "api-key": ""
-      }
-    },
     "rust-analyzer": {
       "binary": {
         "path": "/run/current-system/sw/bin/rust-analyzer",
         "path_lookup": true
+      },
+      "initialization_options": {
+        "check": {
+          "command": "clippy"
+        }
       }
     }
   }

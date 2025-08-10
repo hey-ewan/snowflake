@@ -13,11 +13,8 @@ from ignis.services.notifications import NotificationService
 from ignis.services.mpris import MprisService, MprisPlayer
 from ignis.services.upower import UPowerService
 
-from modules import Launcher, NotificationPopup , ControlCenter
-from user_options import user_options
-
 css_manager = CssManager.get_default()
-
+css_manager.widgets_style_priority = "user"
 css_manager.apply_css(
     CssInfoPath(
         name="main",
@@ -25,7 +22,10 @@ css_manager.apply_css(
         path=os.path.join(utils.get_current_dir(), "style.scss"),
     )
 )
+print("Widget style priority:", css_manager._widgets_style_priority)
 
+from modules import Launcher, NotificationPopup , ControlCenter
+# from user_options import user_options
 
 audio = AudioService.get_default()
 system_tray = SystemTrayService.get_default()

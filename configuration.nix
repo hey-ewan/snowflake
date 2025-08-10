@@ -109,8 +109,17 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  # Environment variables for Qt/QML applications
+  environment.variables.PATH = [
+    "$HOME/.cargo/bin"
+    "$HOME/.local/bin"
+  ];
+
   environment.variables = {
+    PENSSL_DIR = "${pkgs.openssl.dev}";
+    PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
+    LIBCLANG_PATH = "${pkgs.llvmPackages.libclang.lib}/lib";
+    CLANG_PATH = "${pkgs.llvmPackages.clang}/bin/clang";
+    BINDGEN_EXTRA_CLANG_ARGS = "--target=x86_64 -isystem ${pkgs.glibc.dev}/include";
     QML2_IMPORT_PATH = with pkgs; lib.concatStringsSep ":" [
       "${libsForQt5.qt5.qtgraphicaleffects}/lib/qt-5/qml"
       "${kdePackages.qt5compat}/lib/qt-6/qml"
